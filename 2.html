@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر الأحذية الأنيقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --color-primary: #1D7874;
+            --color-primary-hover: #3AA9A4;
+            --color-text-dark: #2C3E50;
+            --color-text-light: #FDFEFE;
+            --color-bg: #F7F9F9;
+            --color-bg-alt: #FFFFFF;
+            --color-bg-overlay: rgba(29, 120, 116, 0.7);
+            --color-icon: #1D7874;
+            --color-meta-text: #7D8A95;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+        }
+
+        main {
+            padding: 0 5%;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--color-primary);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-3px);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: rgba(247, 249, 249, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo a {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-text-dark);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--color-text-dark);
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--color-primary-hover);
+        }
+
+        .cart-icon-container a {
+            font-size: 1.5rem;
+            color: var(--color-icon);
+            text-decoration: none;
+            position: relative;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* --- Page Sections --- */
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: linear-gradient(var(--color-bg-overlay), var(--color-bg-overlay)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&q=80');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            color: var(--color-text-light);
+        }
+
+        .hero-content {
+            background-color: transparent;
+            padding: 2.5rem;
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--color-text-light);
+        }
+
+        /* --- Products Section --- */
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            transform: scale(1.05);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: var(--color-bg-alt);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3,
+        .product-info .price {
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-info h3,
+        .product-card:hover .product-info .price {
+            transform: translateY(-12px);
+        }
+
+        .price {
+            color: var(--color-primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: -10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .product-card:hover .add-to-cart-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- About Section --- */
+        #about {
+            background-color: var(--color-bg-alt);
+            padding: 4rem 10%;
+            text-align: center;
+            border-radius: 10px;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+
+        #about p {
+            font-size: 1.1rem;
+            color: var(--color-meta-text);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            background-color: #134f4c;
+            color: var(--color-text-light);
+        }
+
+        /* --- Cart Modal --- */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .cart-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 25px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-cart-btn {
+            color: #aaa;
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-cart-btn:hover {
+            color: black;
+        }
+
+        #cart-items-list {
+            list-style: none;
+            margin-top: 20px;
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .cart-item-placeholder {
+            text-align: center;
+            padding: 2rem;
+            color: var(--color-meta-text);
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-left: 15px;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-controls button {
+            background: #ddd;
+            border: none;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 3px;
+        }
+
+        .quantity-controls span {
+            margin: 0 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        #cart-total {
+            text-align: left;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2.2rem;
+            }
+
+            /* On small screens, cart icon would be inside a burger menu which is not implemented here */
+            /* For simplicity, we hide the main nav links but keep the cart visible if needed */
+            nav ul li:not(.cart-icon-container) {
+                display: none;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .cart-modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="#hero">الأناقة لكل خطوة</a>
+            </div>
+            <ul>
+                <li><a href="#products">المنتجات</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+                <li class="cart-icon-container">
+                    <a href="#" id="cart-icon">🛒<span id="cart-count">0</span></a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1>اكتشف تشكيلتنا الجديدة</h1>
+                <p>أحذية تجمع بين الراحة والأناقة لتناسب جميع مناسباتك.</p>
+                <a href="#products" class="btn">تصفح الآن</a>
+            </div>
+        </section>
+
+        <section id="products">
+            <h2>منتجاتنا</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="formal">رسمي</button>
+                <button class="filter-btn" data-filter="casual">كاجوال</button>
+                <button class="filter-btn" data-filter="sport">رياضي</button>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" data-category="formal" data-id="1" data-name="حذاء جلد كلاسيكي" data-price="350" data-img="https://images.unsplash.com/photo-1544958332-9a79525545a8?w=500&q=80">
+                    <div class="product-image-container">
+                        <img src="حذاء جلد كلاسيكي.jpg" alt="حذاء رسمي">
+                    </div>
+                    <div class="product-info">
+                        <h3>حذاء جلد كلاسيكي</h3>
+                        <p class="price">350.00 د.ج</p>
+                        <button class="add-to-cart-btn">إضافة للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card" data-category="casual" data-id="2" data-name="حذاء قماشي مريح" data-price="220" data-img="https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=500&q=80">
+                    <div class="product-image-container">
+                        <img src="حذاء قماشي مريح.jpg" alt="حذاء كاجوال">
+                    </div>
+                    <div class="product-info">
+                        <h3>حذاء قماشي مريح</h3>
+                        <p class="price">220.00 د.ج</p>
+                        <button class="add-to-cart-btn">إضافة للسلة</button>
+                    </div>
+                </div>
+                 <div class="product-card" data-category="sport" data-id="3" data-name="حذاء جري خفيف" data-price="450" data-img="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&q=80">
+                    <div class="product-image-container">
+                        <img src="حذاء جري خفيف.jpg" alt="حذاء رياضي">
+                    </div>
+                    <div class="product-info">
+                        <h3>حذاء جري خفيف</h3>
+                        <p class="price">450.00 د.ج</p>
+                        <button class="add-to-cart-btn">إضافة للسلة</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>من نحن</h2>
+            <div class="about-content">
+<p>هاده تجربة فقط و شكرا</p> 
+           </div>
+        </section>
+
+    </main>
+
+    <footer id="contact">
+        <p> متجر الأناقة لكل خطوة </p>
+        <a href="site.html" class="btn btn-primary">store</a>
+    </footer>
+
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-cart-btn">&times;</span>
+            <h2>سلة التسوق</h2>
+            <ul id="cart-items-list">
+                </ul>
+            <div id="cart-total">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. DOM Element Selections ---
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            const cartIcon = document.getElementById('cart-icon');
+            const cartModal = document.getElementById('cart-modal');
+            const closeModalBtn = document.querySelector('.close-cart-btn');
+            const cartCountSpan = document.getElementById('cart-count');
+            const cartItemsList = document.getElementById('cart-items-list');
+            const cartTotalEl = document.getElementById('cart-total');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const productCards = document.querySelectorAll('.product-card');
+
+            // --- 2. State Management ---
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // --- 3. Event Listeners ---
+
+            // Listen for clicks on "Add to Cart" buttons
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const card = e.target.closest('.product-card');
+                    const product = {
+                        id: card.dataset.id,
+                        name: card.dataset.name,
+                        price: parseFloat(card.dataset.price),
+                        img: card.dataset.img
+                    };
+                    addToCart(product);
+                });
+            });
+
+            // Listen for clicks on the main cart icon to open the modal
+            cartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                cartModal.classList.add('show');
+            });
+
+            // Listen for clicks on the close button in the modal
+            closeModalBtn.addEventListener('click', () => {
+                cartModal.classList.remove('show');
+            });
+
+            // Listen for clicks outside the modal content to close it
+            window.addEventListener('click', (e) => {
+                if (e.target == cartModal) {
+                    cartModal.classList.remove('show');
+                }
+            });
+
+            // Listen for clicks within the cart items list (for quantity changes and removal)
+            cartItemsList.addEventListener('click', (e) => {
+                const target = e.target;
+                const parentItem = target.closest('.cart-item');
+                if (!parentItem) return;
+
+                const productId = parentItem.dataset.id;
+
+                if (target.classList.contains('quantity-increase')) {
+                    changeQuantity(productId, 1);
+                } else if (target.classList.contains('quantity-decrease')) {
+                    changeQuantity(productId, -1);
+                }
+            });
+            
+            // Listen for filter button clicks
+             filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const filter = button.dataset.filter;
+                    productCards.forEach(card => {
+                        card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'block' : 'none';
+                    });
+                });
+            });
+
+
+            // --- 4. Core Logic Functions ---
+
+            function addToCart(product) {
+                const existingProduct = cart.find(item => item.id === product.id);
+                if (existingProduct) {
+                    existingProduct.quantity++;
+                } else {
+                    cart.push({ ...product,
+                        quantity: 1
+                    });
+                }
+                updateCart();
+            }
+
+            function changeQuantity(productId, amount) {
+                const product = cart.find(item => item.id === productId);
+                if (product) {
+                    product.quantity += amount;
+                    if (product.quantity <= 0) {
+                        cart = cart.filter(item => item.id !== productId);
+                    }
+                    updateCart();
+                }
+            }
+            
+            function updateCart() {
+                renderCartItems();
+                renderCartTotal();
+                updateCartCount();
+                saveCartToLocalStorage();
+            }
+
+            // --- 5. UI Update Functions ---
+
+            function renderCartItems() {
+                cartItemsList.innerHTML = ''; // Clear current list
+                if (cart.length === 0) {
+                    cartItemsList.innerHTML = '<li class="cart-item-placeholder">سلتك فارغة حالياً.</li>';
+                    return;
+                }
+                cart.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'cart-item';
+                    li.dataset.id = item.id;
+                    li.innerHTML = `
+                        <img src="${item.img}" alt="${item.name}">
+                        <div class="cart-item-details">
+                            <strong>${item.name}</strong>
+                            <p>${item.price.toFixed(2)} د.ج</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-increase">+</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-decrease">-</button>
+                        </div>
+                    `;
+                    cartItemsList.appendChild(li);
+                });
+            }
+
+            function renderCartTotal() {
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartTotalEl.innerHTML = `<p>الإجمالي: ${total.toFixed(2)} د.ج</p>`;
+            }
+
+            function updateCartCount() {
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountSpan.textContent = count;
+            }
+
+            // --- 6. Persistence ---
+            
+            function saveCartToLocalStorage() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            // --- 7. Initialization ---
+            
+            updateCart(); // Initial render on page load
+
+        });
+    </script>
+</body>
+
+</html>

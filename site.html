@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بيئة العمل والعوامل البشرية</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- Global Styles & Color Palette --- */
+        :root {
+            --color-primary: #1D7874;
+            --color-primary-hover: #3AA9A4;
+            --color-text-dark: #2C3E50;
+            --color-text-light: #FDFEFE;
+            --color-bg: #F7F9F9;
+            --color-bg-alt: #FFFFFF;
+            --color-bg-overlay: rgba(29, 120, 116, 0.7);
+            --color-icon: #1D7874;
+            --color-meta-text: #7D8A95;
+            --font-main: 'Cairo', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg);
+            color: var(--color-text-dark);
+            overflow-x: hidden; /* Prevent horizontal scrollbar from animations */
+        }
+
+        /* --- Reusable Components --- */
+        .btn {
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            display: inline-block;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            color: var(--color-text-light);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(29, 120, 116, 0.2);
+        }
+
+        /* --- Header & Navigation --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 1000;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .main-header.scrolled {
+            background-color: rgba(19, 79, 76, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-text-light);
+            text-decoration: none;
+        }
+
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin: 0 15px; }
+        .nav-links a {
+            color: var(--color-text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--color-primary-hover);
+            border-bottom-color: var(--color-primary-hover);
+        }
+
+        .hamburger { display: none; }
+        .mobile-nav { display: none; }
+
+        /* --- Sections General Styling --- */
+        .section {
+            padding: 100px 50px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+        .section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+        .section > p {
+            max-width: 800px;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .section-light { background-color: var(--color-bg-alt); }
+        .section-dark { background-color: var(--color-bg); }
+        
+        /* --- Hero Section & Parallax --- */
+        #home {
+            background-image: linear-gradient(var(--color-bg-overlay), var(--color-bg-overlay)), url('https://images.unsplash.com/photo-1544247291-2a44b73493b8?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Creates the parallax effect */
+            color: var(--color-text-light);
+        }
+        
+        #home .hero-content {
+            transition: transform 0.2s ease-out; /* Smooth parallax movement */
+        }
+
+        #home h1 { font-size: 4.2rem; }
+        #home p { font-size: 1.2rem; line-height: 1.7; }
+        
+        /* --- Scroll Down Arrow --- */
+        .scroll-down-arrow {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            text-decoration: none;
+            animation: bounce 2s infinite;
+            color: var(--color-text-light);
+        }
+        .scroll-down-arrow.dark-arrow {
+            color: var(--color-text-dark);
+        }
+        
+        /* --- Technology & Cards Section --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
+        }
+        .feature-card {
+            background: var(--color-bg-alt);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+             transform: translateY(-8px); 
+             box-shadow: 0 10px 30px rgba(0,0,0,0.1), 0 0 20px rgba(29, 120, 116, 0.2); /* Added glow effect */
+        }
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--color-icon);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease; /* Added transition for icon */
+        }
+        .feature-card:hover i {
+            transform: scale(1.1) rotate(-5deg); /* Dynamic icon movement on hover */
+        }
+        .feature-card h3 {
+             color: var(--color-primary);
+        }
+
+        /* --- About Section --- */
+        .about-content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            text-align: right;
+            width: 100%;
+            max-width: 1100px;
+        }
+        .about-content img { max-width: 40%; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .about-content div { flex: 1; }
+
+        /* --- Contact Section --- */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 700px;
+            background: var(--color-bg-alt);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .contact-form h3 { color: var(--color-primary); }
+        
+        /* --- Footer --- */
+        footer { 
+            background-color: #134f4c;
+            color: var(--color-text-light); 
+            text-align: center; 
+            padding: 40px 20px; 
+        }
+        
+        /* --- Animations & NEW Scroll-Reveal --- */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .section { padding: 80px 20px; }
+            #home { background-attachment: scroll; } /* Disable fixed parallax on mobile for performance */
+            .section h2 { font-size: 2.2rem; }
+            #home h1 { font-size: 2.8rem; }
+            .main-header { padding: 15px 20px; }
+            .nav-links { display: none; }
+            .hamburger { display: block; background: none; border: none; color: var(--color-text-light); font-size: 1.8rem; cursor: pointer; z-index: 1001; }
+            .mobile-nav {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                position: fixed;
+                top: 0; right: 0;
+                width: 100%; height: 100vh;
+                background-color: rgba(19, 79, 76, 0.98);
+                backdrop-filter: blur(10px);
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 1000;
+            }
+            .mobile-nav.is-active { transform: translateX(0); }
+            .mobile-nav a { color: var(--color-text-light); text-decoration: none; font-size: 1.6rem; }
+            
+            .about-content { flex-direction: column; text-align: center; }
+            .about-content img { max-width: 80%; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header" id="main-header">
+        <div class="logo"><a href="#home"></a><span></span></div>
+        <nav class="main-nav">
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Présentation </a></li>
+                <li><a href="#solutions">Définition </a></li>
+                <li><a href="#technology">Caractéristiques</a></li>
+                <li><a href="#about">La mémoire </a></li>
+                <li><a href="#blog"> La mémoire à court </a></li>
+                <li><a href="#careers">  long terme </a></li>
+                <li><a href="#contact"> Critères d’ergonomie  </a></li>
+            </ul>
+        </nav>
+        <button class="hamburger" id="hamburger-menu"><i class="fas fa-bars"></i></button>
+    </header>
+    
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#home">Présentation</a>
+        <a href="#solutions">Définition</a>
+        <a href="#technology">Caractéristiques</a>
+        <a href="#about">La mémoire </a>
+        <a href="#blog">La mémoire à court </a>
+        <a href="#careers">long terme </a>
+        <a href="#contact">Critères dergonomie </a>
+    </div>
+
+    <main>
+        <section id="home" class="section">
+            <div class="hero-content">
+                <h1 class="fade-in-element">L'ergonomie humaines </h1>
+                <p class="fade-in-element" style="transition-delay: 0.2s;">Préparé par les étudiants<br>
+                Rahma Anana, Malek Fntazi, Oussama</p>
+                <div class="hero-buttons fade-in-element" style="transition-delay: 0.4s;">
+                    <a href="#solutions" class="btn btn-primary">Découvrir plus</a>
+                </div>
+            </div>
+            <a href="#solutions" class="scroll-down-arrow"><i class="fas fa-chevron-down"></i></a>
+        </section>
+
+        <section id="solutions" class="section section-light">
+            <h2 class="fade-in-element">Définition</h2>
+            <p class="fade-in-element"> L'ergonomie est la science qui vise à optimiser les relations entre l'humain et son environnement de travail, en considérant les capacités et les limites humaines. Elle a une relation étroite avec la mémoire, car elle étudie comment les personnes mémorisent, perçoivent et traitent l'information dans leur environnement professionnel.
+
+Plus précisément, l'ergonomie cognitive, une branche de l'ergonomie, se concentre sur les processus mentaux tels que la perception, la mémoire, le raisonnement et la motricité. Elle vise à concevoir des systèmes et des outils qui prennent en compte les capacités et les limites cognitives des utilisateurs, minimisant ainsi les erreurs, réduisant le stress et améliorant l'efficacité et le confort.</p>
+            <a href="#technology" class="scroll-down-arrow dark-arrow"><i class="fas fa-chevron-down"></i></a>
+        </section>
+
+        <section id="technology" class="section section-dark">
+            <h2 class="fade-in-element">Caractéristiques</h2>
+            <p class="fade-in-element">Ces caractéristiques font référence aux capacités mentales, physiques et sensorielles de l être humain.</p>
+            <h3 class="fade-in-element">Principales caractéristiques</h3>
+            <div class="feature-grid">
+                <div class="feature-card fade-in-element">
+                    <i class="fa fa-wpexplorer" aria-hidden="true"></i>
+                    <h3>Perception sensorielle</h3><br><h3>Mémoire</h3><br><h3>Attention</h3>
+                </div>
+                <div class="feature-card fade-in-element" style="transition-delay: 0.2s;">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Motricité</h3><br><h3>Fatigabilité</h3>
+                </div>
+                <div class="feature-card fade-in-element" style="transition-delay: 0.4s;">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Capacité de traitement</h3><br><h3>Temps de réaction</h3>
+                </div>
+            </div>
+            <a href="#about" class="scroll-down-arrow dark-arrow"><i class="fas fa-chevron-down"></i></a>
+        </section>
+
+        <section id="about" class="section section-light">
+            <div class="about-content fade-in-element">
+                <img src="pic.png" alt="فريق العمل">
+                <div>
+                    <h2> La mémoire sensorielle </h2>
+                    <p> La mémoire sensorielle est la première étape de la mémoire où sont stockées les informations sensorielles pendant une très courte durée. Elle permet de reconnaître des formes, des sons, des goûts et d'autres sensations.</p>
+                </div>
+            </div>
+            <a href="#blog" class="scroll-down-arrow dark-arrow"><i class="fas fa-chevron-down"></i></a>
+        </section>
+        
+        <section id="blog" class="section section-dark">
+            <h2 class="fade-in-element">La mémoire à court terme</h2>
+            <p class="fade-in-element">La mémoire à court terme, aussi appelée mémoire de travail, permet de retenir et de manipuler des informations pendant une courte période. Elle est cruciale pour des tâches comme comprendre une conversation ou suivre une instruction. Sa capacité est limitée (environ 7 éléments).</p>
+            <a href="#careers" class="scroll-down-arrow dark-arrow"><i class="fas fa-chevron-down"></i></a>
+        </section>
+
+        <section id="careers" class="section section-light">
+            <h2 class="fade-in-element">La mémoire à long terme</h2>
+            <p class="fade-in-element">      La mémoire à long terme (MLT) stocke des souvenirs et des connaissances sur une période allant de quelques minutes à toute une vie. Elle se divise en mémoire explicite (faits, événements) et implicite (savoir-faire, automatismes).
+</p>
+            <a href="#contact" class="scroll-down-arrow dark-arrow"><i class="fas fa-chevron-down"></i></a>
+        </section>
+
+        <section id="contact" class="section section-dark">
+            <h2 class="fade-in-element">Critères d’ergonomie</h2>
+            <p class="fade-in-element">Ce sont des principes visant à améliorer l'efficacité, le confort et la sécurité des interactions...</p>
+            <div class="contact-form fade-in-element" style="transition-delay: 0.2s;">
+                <h3>Conclusion</h3> 
+                <p> L'ergonomie se focalise sur l'adaptation des systèmes aux spécificités humaines. La mémoire est au cœur de cette démarche : une interface bien conçue réduit la surcharge cognitive, simplifie l'apprentissage et renforce l'intuitivité du système, menant à une meilleure expérience utilisateur et une plus grande efficacité.
+
+</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>نموذج صغير حول بيئة العمل في تطوير المواقع لتسهيل التعامل.</p>
+        <a href="2.html" class="btn btn-primary">store</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('main-header');
+            const hamburger = document.getElementById('hamburger-menu');
+            const mobileNav = document.getElementById('mobile-nav');
+            const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+            const sections = document.querySelectorAll('section');
+            const heroContent = document.querySelector('#home .hero-content');
+
+            // --- Header background on scroll ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- Active nav link on scroll ---
+            window.addEventListener('scroll', () => {
+                let current = 'home';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - header.offsetHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // --- Mobile Menu Toggle ---
+            hamburger.addEventListener('click', () => {
+                const isActive = mobileNav.classList.toggle('is-active');
+                hamburger.innerHTML = isActive ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+
+            function closeMobileMenu() {
+                mobileNav.classList.remove('is-active');
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+            navLinks.forEach(link => {
+                if(link.closest('.mobile-nav')) { // Only for mobile links
+                    link.addEventListener('click', closeMobileMenu);
+                }
+            });
+            
+            // --- NEW: Parallax Effect on Hero Content ---
+            if (window.innerWidth > 768) { // Only on desktop
+                window.addEventListener('scroll', () => {
+                    const scrollValue = window.scrollY;
+                    heroContent.style.transform = `translateY(${scrollValue * 0.4}px)`;
+                });
+            }
+
+            // --- NEW: Scroll-Reveal Animation Logic ---
+            const revealElements = document.querySelectorAll('.fade-in-element');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Animate only once
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            revealElements.forEach(element => {
+                revealObserver.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>

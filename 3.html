@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خلفية متحركة مع زر</title>
+    <style>
+        /* CSS: لتنسيق الصفحة والخلفية والزر */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* لإخفاء أي شريط تمرير قد يظهر */
+            background-color: #1D7874; /* لون الخلفية الأساسي الجديد */
+            font-family: 'Arial', sans-serif;
+        }
+
+        #interactive-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* وضع الخلفية خلف كل العناصر الأخرى */
+            /* استخدام ألوان التدرج الجديدة */
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), #3AA9A4 0%, #1D7874 25%);
+            transition: background 0.1s ease-out; /* حركة انتقال ناعمة لتأثير الفأرة */
+        }
+
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* يجعل الحاوية تملأ الشاشة بالكامل */
+            width: 100vw;
+        }
+
+        .stylish-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #F7F9F9; /* لون الخط الجديد */
+            background-color: #3AA9A4; /* لون الزر الجديد */
+            border: none;
+            border-radius: 50px; /* يجعل الحواف دائرية */
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* تأثيرات عند التحويم */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .stylish-button:hover {
+            transform: translateY(-5px); /* يرتفع الزر قليلاً عند التحويم */
+            /* ظل أكثر بروزاً بلون الزر الجديد */
+            box-shadow: 0 10px 20px rgba(58, 169, 164, 0.4); 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="interactive-background"></div>
+
+    <div class="center-container">
+        <a href="site.html" class="stylish-button">my site</a>
+                
+
+    </div>
+
+    <script>
+        // JavaScript: لجعل الخلفية تتفاعل مع الفأرة
+        const background = document.getElementById('interactive-background');
+
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const x = (clientX / window.innerWidth) * 100;
+            const y = (clientY / window.innerHeight) * 100;
+
+            // تحديث متغيرات CSS لتغيير مكان مركز الدائرة المتوهجة
+            background.style.setProperty('--x', `${x}%`);
+            background.style.setProperty('--y', `${y}%`);
+        });
+    </script>
+
+</body>
+</html>
